@@ -9,19 +9,21 @@ from patternMatcher import patternMatcher
 
 # Our input lists for the matching, currently blank.
 
-simpleMatch = []
-complexMatch = []
+simpleMatch = [3, 'x,y', '1,2,3', 'bar,foo', 
+                4, 'x/y', '1/2/3/', 'bar/baz', 'bar/foo']
+complexMatch = [3, 'a,*,*', 'x,*,1', 'x,*,2', 
+                4, 'a/b/c', 'x/4/1/', '/y/abc/2', 'a/c/d/a' ]
 weirdMatch = []
 largeMatch = []
-wildcardMatch = []
+wildcardMatch = [2, '*,*,c', '*,b,*', 1, '/a/b/c/']
 
 # Our output lists for the matching, currently blank.
 
-simpleMatchOut = []
-complexMatchOut = []
+simpleMatchOut = ['x,y', '1,2,3', 'NO MATCH', 'bar,foo']
+complexMatchOut = ['a,*,*', 'x,*,1', 'NO MATCH', 'NO MATCH']
 weirdMatchOut = []
 largeMatchOut = []
-wildcardMatchOut = []
+wildcardMatchOut = ['*,b,*']
 
 class patternMatchTestCase(unittest.TestCase):
 
