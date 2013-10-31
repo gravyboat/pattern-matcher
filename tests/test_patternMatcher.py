@@ -23,6 +23,10 @@ complexMatch = [3, 'a,*,*', 'x,*,1', 'x,*,2',
 weirdMatch = []
 largeMatch = []
 wildcardMatch = [2, '*,*,c', '*,b,*', 1, '/a/b/c/']
+tooManyLinesMatch = [2, 'x,y', '1,2,3', 2, 'x/y', '1/2/3/', 'bar/baz', 'bar/foo']
+tooManyOptionsMatch = [1, 'x,y', '1,2,3', 2, 'x/y', '1/2/4/']
+notEnoughLinesMatch = [2, 'x,y', '1,2,3', 3, 'x/y', '1/2/4/']
+notEnoughOptionsMatch = [3, 'x,y', '1,2,3', 2, 'x/y', '1/2/4/']
 
 '''
 Our output lists for the matching.
