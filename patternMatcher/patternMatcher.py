@@ -63,19 +63,15 @@ def patternMatch(patternsList, pathsList):
 	matchedList = []
 
 	for pattern in newPatternsList:
-		matches = 0
 		strippedPattern = pattern.strip(",").split(",")
-		print(strippedPattern)
 		for path in newPathsList:
 			matches = 0
 			strippedPath = path.strip("/").split("/")
-			print(strippedPath)
 			for i, field in enumerate(strippedPath):
 				if field == '*':
 					continue
 				elif field == strippedPath[i]:
 					matches += 1
-					print(matches)
 		if matches == len(strippedPattern):
 			matchedList.append(strippedPattern)
 			print(matchedList)
