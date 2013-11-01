@@ -3,6 +3,16 @@
 '''
 Author - Forrest Alvarez
 Date - 2013-10-30
+
+The patternMatcher script takes input that contains two key values, then a 
+number of strings (such as 'x,y') equal to the value of the keys (for example,
+if key one was equal to 5, there would be 5 strings following it). These 
+sections are broken up into two lists and then compared against each other for
+matches, it then returns a list based on the the matches it finds. If no match
+is found then 'NO MATCH' is placed into the list. The pattern matcher has the
+ability to match wildcard values as well.
+
+The patternMatcher script uses stdin and stdout when referenced directly.
 '''
 
 import sys
@@ -25,7 +35,7 @@ def patternMatcher(inputList):
 		print('Non-integer value found in first key')
 
 	endOfVals = newInputList[startOfVals] + startofVals + 1
-	
+
 	try:
 		int(endOfVals)
 	except ValueError:
