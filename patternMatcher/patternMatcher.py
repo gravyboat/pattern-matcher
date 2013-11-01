@@ -62,8 +62,14 @@ def patternMatcher(patternsList, pathsList):
 	matchedList = []
 
 	for pattern in newPatternsList:
-		pattern.strip(",").split(",")
-		
+		strippedPattern = pattern.strip(",").split(",")
+		for path in newPathsList:
+			strippedPath = path.strip("/").split("/")
+			if strippedPattern == strippedPath:
+				matchedList.append(strippedPattern)
+
+
+
 
 
 	for i in comparedFrom:
