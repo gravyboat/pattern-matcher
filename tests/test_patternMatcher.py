@@ -12,6 +12,7 @@ import os
 sys.path.append(os.path.join('..', 'patternMatcher'))
 
 from patternMatcher import listSplitter
+from patternMatcher import patternMatch
 
 '''
 Our input lists for the matching.
@@ -56,14 +57,13 @@ class patternMatchTestCase(unittest.TestCase):
     '''
 
     def test_listSplitter(self):
-        a, b =listSplitter(splitIn)
+        a, b = listSplitter(splitIn)
         self.assertEqual(a, splitOutPatterns)
         self.assertEqual(b, splitOutPaths)
 
     def test_simpleMatch(self):
-        patternMatcherInstance = patternMatcher()
-        matchedData = matchValues(self.simpleMatch)
-        self.assertEqual(matchedData, simpleMatchOut)
+        a = patternMatch(splitOutPatterns, splitOutPaths)
+        self.assertEqual(a, simpleMatchOut)
 
     '''
     Tests against an example that has several complex matches.
