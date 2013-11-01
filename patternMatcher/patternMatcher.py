@@ -18,40 +18,53 @@ The patternMatcher script uses stdin and stdout when referenced directly.
 import sys
 import re
 
-def patternMatcher(inputList):
-
+def listSplitter(inputList):
+	
 	newInputList = inputList
-	comparedAgainst = []
-	comparedFrom = []
-	matchedList = []
+	patternsList = []
+	pathsList = []
+
 	'''
 	We set up our values here for the 'keys', we also check to make sure they
 	are integers.
 	'''
-	startOfVals = newInputList[0] + 1
+	startOfPatterns = newInputList[0] + 1
 	try:
-		int(startOfVals)
+		int(startOfPatterns)
 	except ValueError:
 		print('Non-integer value found in first key')
 
-	endOfVals = newInputList[startOfVals] + startofVals + 1
+	endOfPaths = newInputList[startOfPatterns] + startOfPatterns + 1
 
 	try:
-		int(endOfVals)
+		int(startOfPaths)
 	except ValueError:
 		print('Non-integer value found in second key')
 
 	try:
-		for i in newInputList[1:(startofVals)]:
-			comparedAgainst.append(i.replace(',', '/'))
+		for i in newInputList[1:(startOfPatterns)]:
+			patternsList.append(i)
 	except:
 		print("List length is inaccurate compared to key value.")
 
 	try:
-		for i in newInputList[startOfVals + 1:endOfVals]:
-			comparedFrom.append(i)
+		for i in newInputList[startOfPaths + 1:endofPaths]:
+			pathsList.append(i)
 	except:
 		print("List length is inaccurate compared to key value.")
+
+	return(patternsList, pathsList)
+
+def patternMatcher(patternsList, pathsList):
+
+	newPatternsList = patternsList
+	newPathsList = pathsList
+	matchedList = []
+
+	for pattern in newPatternsList:
+		pattern.strip(",").split(",")
+		
+
 
 	for i in comparedFrom:
 		if 
@@ -61,6 +74,8 @@ def patternMatcher(inputList):
 	than a value matched on a star, need to think of elegant solution, maybe compare multiple matches?
 	code that takes all those values and puts them together.
 	return(matchedList)
+
+def bestMatch(pattern, allMatches):
 
 
 if __name_ == '__main__':
@@ -83,6 +98,6 @@ if __name_ == '__main__':
 		inputList = []
 		for line in sys.stdin.readlines():
 			inputList.append(line.strip())
-		outputList = patternMatcher(inputList)
+		patternsList, pathsList = listSplitter(inputList)
 		for i in outputList:
 			sys.stdout.write(i + "\n")
