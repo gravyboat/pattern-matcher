@@ -7,10 +7,11 @@ Date - 2013-10-30
 
 import unittest
 import sys
+import os
 
 sys.path.append(os.path.join('..', 'patternMatcher'))
 
-from patternMatcher import patternMatcher
+from patternMatcher import listSplitter
 
 '''
 Our input lists for the matching.
@@ -27,6 +28,8 @@ tooManyLinesMatch = [2, 'x,y', '1,2,3', 2, 'x/y', '1/2/3/', 'bar/baz', 'bar/foo'
 tooManyOptionsMatch = [1, 'x,y', '1,2,3', 2, 'x/y', '1/2/4/']
 notEnoughLinesMatch = [2, 'x,y', '1,2,3', 3, 'x/y', '1/2/4/']
 notEnoughOptionsMatch = [3, 'x,y', '1,2,3', 2, 'x/y', '1/2/4/']
+splitIn = [3, 'x,y', '1,2,3', 'bar,foo', 
+            4, 'x/y', '1/2/3/', 'bar/baz', 'bar/foo']
 
 '''
 Our output lists for the matching.
@@ -37,6 +40,8 @@ complexMatchOut = ['a,*,*', 'x,*,1', 'NO MATCH', 'NO MATCH']
 weirdMatchOut = []
 largeMatchOut = []
 wildcardMatchOut = ['*,b,*']
+splitOutPatterns = ['x,y', '1,2,3', 'bar,foo']
+splitOutPaths = ['x/y', '1/2/3/', 'bar/baz', 'bar/foo']
 
 class patternMatchTestCase(unittest.TestCase):
 
@@ -49,6 +54,11 @@ class patternMatchTestCase(unittest.TestCase):
     '''
     Tests against an example that contains only a few simple items.
     '''
+
+    def test_listSplitter(self):
+        a, b =listSplitter(splitIn)
+        self.assertEqual(a, splitOutPatterns)
+        self.assertEqual(b, splitOutPaths)
 
     def test_simpleMatch(self):
         patternMatcherInstance = patternMatcher()

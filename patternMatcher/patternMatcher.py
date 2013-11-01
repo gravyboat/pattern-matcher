@@ -28,70 +28,71 @@ def listSplitter(inputList):
 	We set up our values here for the 'keys', we also check to make sure they
 	are integers.
 	'''
-	startOfPatterns = newInputList[0] + 1
+	startOfPaths = int(newInputList[0]) + 1
+	
 	try:
-		int(startOfPatterns)
+		int(startOfPaths)
 	except ValueError:
 		print('Non-integer value found in first key')
 
-	endOfPaths = newInputList[startOfPatterns] + startOfPatterns + 1
-
+	endOfPaths = int(newInputList[startOfPaths]) + int(newInputList[0]) + 1
+	
 	try:
-		int(startOfPaths)
+		int(endOfPaths)
 	except ValueError:
 		print('Non-integer value found in second key')
 
 	try:
-		for i in newInputList[1:(startOfPatterns)]:
+		for i in newInputList[1:(startOfPaths)]:
 			patternsList.append(i)
 	except:
-		print("List length is inaccurate compared to key value.")
+		print("List length is inaccurate compared to key value for patterns.")
 
 	try:
-		for i in newInputList[startOfPaths + 1:endofPaths]:
+		for i in newInputList[(startOfPaths + 1):(endOfPaths + 1)]:
 			pathsList.append(i)
 	except:
-		print("List length is inaccurate compared to key value.")
+		print("List length is inaccurate compared to key value for paths.")
 
 	return(patternsList, pathsList)
 
-def patternMatcher(patternsList, pathsList):
+def patternMatch(patternsList, pathsList):
 
 	newPatternsList = patternsList
 	newPathsList = pathsList
 	matchedList = []
 
 	for pattern in newPatternsList:
+		matches = 0
 		strippedPattern = pattern.strip(",").split(",")
+		print(strippedPattern)
 		for path in newPathsList:
+			matches = 0
 			strippedPath = path.strip("/").split("/")
-			if strippedPattern == strippedPath:
-				matchedList.append(strippedPattern)
+			print(strippedPath)
+			for i, field in enumerate(strippedPath):
+				if field == '*':
+					continue
+				elif field == strippedPath[i]:
+					matches += 1
+					print(matches)
+		if matches == len(strippedPattern):
+			matchedList.append(strippedPattern)
+			print(matchedList)
+		else:
+			matchedList.append('NO MATCH')
 
-
-
-
-
-	for i in comparedFrom:
-		if 
-	
-	regex code that loops through the values from list one, and compares them against list two
-	The above code needs some logic for the matching, where a value matched on the furthest left is better
-	than a value matched on a star, need to think of elegant solution, maybe compare multiple matches?
-	code that takes all those values and puts them together.
 	return(matchedList)
 
 def bestMatch(pattern, allMatches):
+	pass
 
 
-if __name_ == '__main__':
+if __name__ == '__main__':
 	
 	'''
 	We check to see whether the input is a file, if it isn't we exit out.
 	'''
-
-	if sys.stdin.isatty():
-		print("No file provided, exiting")
 
 	'''
 	Our input file is taken, newlines are stripped, and it's run through the
@@ -100,10 +101,14 @@ if __name_ == '__main__':
 	to return the data in the same format it was put into patternMatcher).
 	'''
 
+	if sys.stdin.isatty():
+		print("No file provided, exiting")
+
 	elif not sys.stdin.isatty():
 		inputList = []
 		for line in sys.stdin.readlines():
 			inputList.append(line.strip())
+		print(inputList)
 		patternsList, pathsList = listSplitter(inputList)
-		for i in outputList:
-			sys.stdout.write(i + "\n")
+		a = patternMatch(patternsList, pathsList)
+		print(a)
