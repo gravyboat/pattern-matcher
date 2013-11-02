@@ -39,26 +39,29 @@ def listSplitter(inputList):
 		endOfPaths = int(newInputList[startOfPaths]) + int(newInputList[0]) + 1
 	except ValueError:
 		print('Non-integer value found in second key')
+		sys.exit()
 
 	try:
 		for i in newInputList[1:(startOfPaths)]:
 			patternsList.append(i)
 	except:
 		print("List length is inaccurate compared to key value for patterns.")
+		sys.exit()
 
 	try:
 		for i in newInputList[(startOfPaths + 1):(endOfPaths + 1)]:
 			pathsList.append(i)
 	except:
 		print("List length is inaccurate compared to key value for paths.")
+		sys.exit()
 
 	return(patternsList, pathsList)
 
 def patternMatch(patternsList, pathsList):
 
 	'''
-	The patternMatch function takes our paths, and our patterns and strips
-	out any sort of split characters. It then compares the split pattern
+	The patternMatch function takes our paths and our patterns then strips
+	out any sort of split characters. It compares the split pattern
 	against the split path. If those values match it increments a variable.
 	Once it checks a pattern if the length matches the path, it adds that
 	pattern to a list. If no matches are found after checking all patterns
@@ -82,14 +85,12 @@ def patternMatch(patternsList, pathsList):
 					elif field == strippedPath[i]:
 						matches += 1
 				except:
-					continue
-			
+					continue	
 			if matches == len(strippedPath):
 				matchedList.append(pattern)
 				matchesFound = True
 		if matchesFound == False:
 			matchedList.append('NO MATCH')
-
 	return(matchedList)
 	
 
