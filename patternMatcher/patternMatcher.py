@@ -16,7 +16,7 @@ The patternMatcher script uses stdin and stdout when referenced directly.
 '''
 
 import sys
-import re
+import pdb
 
 def listSplitter(inputList):
 	
@@ -61,24 +61,36 @@ def patternMatch(patternsList, pathsList):
 	newPatternsList = patternsList
 	newPathsList = pathsList
 	matchedList = []
+	print(patternsList)
+	print(pathsList)
 
-	for pattern in newPatternsList:
-		strippedPattern = pattern.strip(",").split(",")
-		for path in newPathsList:
+	'''
+	c = [3, 'x,y', '1,2,3', 'bar,foo', 4, 'x/y', '1/2/3/', 'bar/baz', 'bar/foo']
+	'''
+
+	for path in newPathsList:
+		matchesFound = False
+		strippedPath = path.strip("/").split("/")
+		for pattern in newPatternsList:
 			matches = 0
-			strippedPath = path.strip("/").split("/")
-			for i, field in enumerate(strippedPath):
-				if field == '*':
+			strippedPattern = pattern.strip(",").split(",")
+			for i, field in enumerate(strippedPattern):
+				try:
+					if field == '*':
+						matches += 1
+					elif field == strippedPath[i]:
+						matches += 1
+				except:
 					continue
-				elif field == strippedPath[i]:
-					matches += 1
-		if matches == len(strippedPattern):
-			matchedList.append(strippedPattern)
-			print(matchedList)
-		else:
+			
+			if matches == len(strippedPath):
+				matchedList.append(pattern)
+				matchesFound = True
+		if matchesFound == False:
 			matchedList.append('NO MATCH')
 
 	return(matchedList)
+	
 
 def bestMatch(pattern, allMatches):
 	pass
@@ -97,14 +109,14 @@ if __name__ == '__main__':
 	to return the data in the same format it was put into patternMatcher).
 	'''
 
-	if sys.stdin.isatty():
-		print("No file provided, exiting")
+	#if sys.stdin.isatty():
+	#	print("No file provided, exiting")
 
-	elif not sys.stdin.isatty():
-		inputList = []
-		for line in sys.stdin.readlines():
-			inputList.append(line.strip())
-		print(inputList)
-		patternsList, pathsList = listSplitter(inputList)
-		a = patternMatch(patternsList, pathsList)
-		print(a)
+	#elif not sys.stdin.isatty():
+	inputList = []
+		#for line in sys.stdin.readlines():
+		#	inputList.append(line.strip())
+	c = [3, 'x,y', '1,2,3', 'bar,foo', 4, 'x/y', '1/2/3/', 'bar/baz', 'bar/foo']
+	patternsList, pathsList = listSplitter(c)
+	a = patternMatch(patternsList, pathsList)
+	print(a)
