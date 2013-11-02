@@ -16,7 +16,6 @@ The patternMatcher script uses stdin and stdout when referenced directly.
 '''
 
 import sys
-import pdb
 
 def listSplitter(inputList):
 	
