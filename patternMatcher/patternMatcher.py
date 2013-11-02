@@ -2,7 +2,7 @@
 
 '''
 Author - Forrest Alvarez
-Date - 2013-10-30
+Date - 2013-11-01
 
 The patternMatcher script takes input that contains two key values, then a 
 number of strings (such as 'x,y') equal to the value of the keys (for example,
@@ -18,26 +18,25 @@ The patternMatcher script uses stdin and stdout when referenced directly.
 import sys
 
 def listSplitter(inputList):
+
+	'''
+	The listSplitter function takes in a single list, then splits it into
+	two separate unique lists based on the key values. These lists are our
+	patterns, and our paths. It then returns both of these lists.
+	'''
 	
 	newInputList = inputList
 	patternsList = []
 	pathsList = []
 
-	'''
-	We set up our values here for the 'keys', we also check to make sure they
-	are integers.
-	'''
-	startOfPaths = int(newInputList[0]) + 1
-	
 	try:
-		int(startOfPaths)
+		startOfPaths = int(newInputList[0]) + 1
 	except ValueError:
 		print('Non-integer value found in first key')
+		sys.exit()
 
-	endOfPaths = int(newInputList[startOfPaths]) + int(newInputList[0]) + 1
-	
 	try:
-		int(endOfPaths)
+		endOfPaths = int(newInputList[startOfPaths]) + int(newInputList[0]) + 1
 	except ValueError:
 		print('Non-integer value found in second key')
 
@@ -57,15 +56,18 @@ def listSplitter(inputList):
 
 def patternMatch(patternsList, pathsList):
 
+	'''
+	The patternMatch function takes our paths, and our patterns and strips
+	out any sort of split characters. It then compares the split pattern
+	against the split path. If those values match it increments a variable.
+	Once it checks a pattern if the length matches the path, it adds that
+	pattern to a list. If no matches are found after checking all patterns
+	it adds a 'NO MATCHES' entry to the list.
+	'''
+
 	newPatternsList = patternsList
 	newPathsList = pathsList
 	matchedList = []
-	print(patternsList)
-	print(pathsList)
-
-	'''
-	c = [3, 'x,y', '1,2,3', 'bar,foo', 4, 'x/y', '1/2/3/', 'bar/baz', 'bar/foo']
-	'''
 
 	for path in newPathsList:
 		matchesFound = False
@@ -108,14 +110,14 @@ if __name__ == '__main__':
 	to return the data in the same format it was put into patternMatcher).
 	'''
 
-	#if sys.stdin.isatty():
-	#	print("No file provided, exiting")
+	if sys.stdin.isatty():
+		print("No file provided, exiting")
 
-	#elif not sys.stdin.isatty():
-	inputList = []
-		#for line in sys.stdin.readlines():
-		#	inputList.append(line.strip())
-	c = [3, 'x,y', '1,2,3', 'bar,foo', 4, 'x/y', '1/2/3/', 'bar/baz', 'bar/foo']
-	patternsList, pathsList = listSplitter(c)
+	elif not sys.stdin.isatty():
+		inputList = []
+		for line in sys.stdin.readlines():
+			inputList.append(line.strip())
+	patternsList, pathsList = listSplitter(inputList)
 	a = patternMatch(patternsList, pathsList)
-	print(a)
+	for i in a:
+		sys.stdout.write(i + "\n")

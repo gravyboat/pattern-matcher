@@ -2,7 +2,10 @@
 
 '''
 Author - Forrest Alvarez
-Date - 2013-10-30
+Date - 2013-11-01
+
+The patternMatcher tests are used to check all functions within the
+patternMatcher.py script.
 '''
 
 import unittest
@@ -15,34 +18,46 @@ from patternMatcher import listSplitter
 from patternMatcher import patternMatch
 
 '''
-Our input lists for the matching.
+The input lists for splitting.
 '''
 
-simpleMatch = [3, 'x,y', '1,2,3', 'bar,foo', 
+splitInSimple = [3, 'x,y', '1,2,3', 'bar,foo', 
                 4, 'x/y', '1/2/3/', 'bar/baz', 'bar/foo']
-complexMatch = [3, 'a,*,*', 'x,*,1', 'x,*,2', 
+splitInComplex = [3, 'a,*,*', 'x,*,1', 'x,*,2', 
                 4, 'a/b/c', 'x/4/1/', '/y/abc/2', 'a/c/d/a' ]
-weirdMatch = []
-largeMatch = []
-wildcardMatch = [2, '*,*,c', '*,b,*', 1, '/a/b/c/']
-tooManyLinesMatch = [2, 'x,y', '1,2,3', 2, 'x/y', '1/2/3/', 'bar/baz', 'bar/foo']
-tooManyOptionsMatch = [1, 'x,y', '1,2,3', 2, 'x/y', '1/2/4/']
-notEnoughLinesMatch = [2, 'x,y', '1,2,3', 3, 'x/y', '1/2/4/']
-notEnoughOptionsMatch = [3, 'x,y', '1,2,3', 2, 'x/y', '1/2/4/']
-splitIn = [3, 'x,y', '1,2,3', 'bar,foo', 
-            4, 'x/y', '1/2/3/', 'bar/baz', 'bar/foo']
+wildcardMatchIn = [2, '*,*,c', '*,b,*', 1, '/a/b/c/']
 
 '''
-Our output lists for the matching.
+Input lists for splitting specificall designed to return errors
+'''
+
+splitInTooManyLines = [2, 'x,y', '1,2,3', 
+                        2, 'x/y', '1/2/3/', 'bar/baz', 'bar/foo']
+splitInNotEnoughLines = [2, 'x,y', '1,2,3', 3, 'x/y', '1/2/4/']
+splitInTooManyOptions = [1, 'x,y', '1,2,3', 2, 'x/y', '1/2/4/']
+splitInnotEnoughOptions = [3, 'x,y', '1,2,3', 2, 'x/y', '1/2/4/']
+
+
+'''
+Our output lists for the matching. Also used as input for pattern matching.
+'''
+
+splitOutPatternsSimple = ['x,y', '1,2,3', 'bar,foo']
+splitOutPathsSimple = ['x/y', '1/2/3/', 'bar/baz', 'bar/foo']
+splitOutPatternsComplex = ['a,*,*', 'x,*,1', 'x,*,2']
+splitOutPathsComplex = ['a/b/c', 'x/4/1/', '/y/abc/2', 'a/c/d/a']
+splitOutWildcardPatterns = ['*,*,c', '*,b,*']
+splitOutWildcardPaths = ['/a/b/c/']
+
+
+'''
+What the output from patternMatch should look like.
 '''
 
 simpleMatchOut = ['x,y', '1,2,3', 'NO MATCH', 'bar,foo']
 complexMatchOut = ['a,*,*', 'x,*,1', 'NO MATCH', 'NO MATCH']
-weirdMatchOut = []
-largeMatchOut = []
 wildcardMatchOut = ['*,b,*']
-splitOutPatterns = ['x,y', '1,2,3', 'bar,foo']
-splitOutPaths = ['x/y', '1/2/3/', 'bar/baz', 'bar/foo']
+
 
 class patternMatchTestCase(unittest.TestCase):
 
@@ -53,51 +68,45 @@ class patternMatchTestCase(unittest.TestCase):
         self.largeMatch = largeMatch
 
     '''
+    Tests our function that splits the lists to ensure it returns the proper
+    output.
+    '''
+
+    def test_simpleSplit(self):
+        a, b = listSplitter(splitInSimple)
+        self.assertEqual(a, splitOutPatternsSimple)
+        self.assertEqual(b, splitOutPathsSimple)
+
+    '''
+    Tests our listSplitter function when we have too many paths for the key.
+    '''
+
+    def test_tooManyLinesSplit(self):
+        a = listSplitter(splitInTooManyLines)
+        print(a)
+        self.assertRaises(ValueError)
+
+    '''
     Tests against an example that contains only a few simple items.
     '''
 
-    def test_listSplitter(self):
-        a, b = listSplitter(splitIn)
-        self.assertEqual(a, splitOutPatterns)
-        self.assertEqual(b, splitOutPaths)
-
     def test_simpleMatch(self):
-        a = patternMatch(splitOutPatterns, splitOutPaths)
+        a = patternMatch(splitOutPatternsSimple, splitOutPathsSimple)
         self.assertEqual(a, simpleMatchOut)
 
     '''
     Tests against an example that has several complex matches.
     '''
     def test_complexMatch(self):
-        patternMatcherInstance = patternMatcher()
-        matchedData = matchValues(self.complexMatch)
-        self.assertEqual(matchedData, complexMatchOut)
-
-    '''
-    Tests against an example which contains oddball items.
-    NOT IMPLEMENTED
-    '''
-    def test_weirdMatch(self):
-        patternMatcherInstance = patternMatcher()
-        matchedData = matchValues(self.weirdMatch)
-        self.assertEqual(matchedData, weirdMatchOut)
-
-    '''
-    Tests against an example that's simple a lot of data to crunch.
-    NOT IMPLEMENTED
-    '''
-    def test_largMatch(self):
-        patternMatcherInstance = patternMatcher()
-        matchedData = matchValues(self.largeMatch)
-        self.assertEqual(matchedData, largeMatchOut)
+        a = patternMatch(splitOutPatternsComplex, splitOutPathsComplex)
+        self.assertEqual(a, complexMatchOut)
 
     '''
     Tests against items where multiple wildcards exists, but one is better.
     '''
     def test_wildcardMatch(self):
-        patternMatcherInstance = patternMatcher()
-        matchedData = matchValues(self.wildcardMatch)
-        self.assertEqual(matchedData, wildcardMatchOut)
+        a = patternMatch(splitOutWildcardPatterns, splitOutWildcardPaths)
+        self.assertEqual(a, wildcardMatchOut)
 
 
 if __name__ == '__main__':
