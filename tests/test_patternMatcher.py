@@ -31,11 +31,11 @@ wildcardMatchIn = [2, '*,*,c', '*,b,*', 1, '/a/b/c/']
 Input lists for splitting specificall designed to return errors
 '''
 
-splitInTooManyLines = [2, 'x,y', '1,2,3', 
+splitInTooManyPaths = [2, 'x,y', '1,2,3', 
                         2, 'x/y', '1/2/3/', 'bar/baz', 'bar/foo']
-splitInNotEnoughLines = [2, 'x,y', '1,2,3', 3, 'x/y', '1/2/4/']
-splitInTooManyOptions = [1, 'x,y', '1,2,3', 2, 'x/y', '1/2/4/']
-splitInnotEnoughOptions = [3, 'x,y', '1,2,3', 2, 'x/y', '1/2/4/']
+splitInNotEnoughPaths = [2, 'x,y', '1,2,3', 3, 'x/y', '1/2/4/']
+splitInTooManyPatterns = [1, 'x,y', '1,2,3', 2, 'x/y', '1/2/4/']
+splitInnotEnoughPatterns = [3, 'x,y', '1,2,3', 2, 'x/y', '1/2/4/']
 
 
 '''
@@ -78,13 +78,38 @@ class patternMatchTestCase(unittest.TestCase):
         self.assertEqual(b, splitOutPathsSimple)
 
     '''
+    Tests our listSplitter function when we don't have enough paths for the
+    key.
+    '''
+
+    def test_tooManyPathsSplit(self):
+        listSplitter(splitInTooManyPaths)
+        self.assertRaises(StandardError)
+
+    '''
     Tests our listSplitter function when we have too many paths for the key.
     '''
 
-    def test_tooManyLinesSplit(self):
-        a = listSplitter(splitInTooManyLines)
-        print(a)
-        self.assertRaises(ValueError)
+    def test_NotEnoughPathsSplit(self):
+        listSplitter(splitInNotEnoughPaths)
+        self.assertRaises(StandardError)
+
+    '''
+    Tests our listSplitter function when we don't have enough patterns for the
+    key.
+    '''
+
+    def test_tooManyPatternsSplit(self):
+        listSplitter(splitInTooManyPatterns)
+        self.assertRaises(StandardError)
+
+    '''
+    Tests our listSplitter function when we have too many paths for the key.
+    '''
+
+    def test_NotEnoughPatternsSplit(self):
+        listSplitter(splitInnotEnoughPatterns)
+        self.assertRaises(StandardError)
 
     '''
     Tests against an example that contains only a few simple items.
