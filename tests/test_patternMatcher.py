@@ -16,6 +16,7 @@ sys.path.append(os.path.join('..', 'patternMatcher'))
 
 from patternMatcher import listSplitter
 from patternMatcher import patternMatch
+from patternMatcher import patternMatch
 
 '''
 The input lists for splitting.
@@ -27,32 +28,42 @@ splitInComplex = [3, 'a,*,*', 'x,*,1', 'x,*,2',
 wildcardMatchIn = [2, '*,*,c', '*,b,*', 1, '/a/b/c/']
 
 '''
-Input lists for splitting specificall designed to return errors
+Input lists for splitting specifically designed to return errors
 '''
+
 splitInTooManyPaths = [2, 'x,y', '1,2,3', 
                         2, 'x/y', '1/2/3/', 'bar/baz', 'bar/foo']
 splitInNotEnoughPaths = [2, 'x,y', '1,2,3', 3, 'x/y', '1/2/4/']
 splitInTooManyPatterns = [1, 'x,y', '1,2,3', 2, 'x/y', '1/2/4/']
 splitInnotEnoughPatterns = [3, 'x,y', '1,2,3', 2, 'x/y', '1/2/4/']
 
-
 '''
-Our output lists for the matching. Also used as input for pattern matching.
+Our output lists for the splitting, also used as input for pattern matching.
 '''
 splitOutPatternsSimple = ['x,y', '1,2,3', 'bar,foo']
+splitOutPatternsComplex = ['1,a,2,d', '1,3,c,b']
+splitOutPatternsWildcard = ['*,b,*,*', '*,*,c,d', '*,b,*,d']
 splitOutPathsSimple = ['x/y', '1/2/3/', 'bar/baz', 'bar/foo']
-splitOutPatternsComplex = ['a,*,*', 'x,*,1', 'x,*,2']
-splitOutPathsComplex = ['a/b/c', 'x/4/1/', '/y/abc/2', 'a/c/d/a']
-splitOutWildcardPatterns = ['*,*,c', '*,b,*']
-splitOutWildcardPaths = ['/a/b/c/']
+splitOutPathsComplex = '/1/a/2/d/'
+splitOutPathsWildcard = '/a/b/c/'
 
+'''
+Output ready for patternMatch.
+'''
+patternMatchPathSimple = 'x/y'
+patternMatchPathComplex = '/1/a/2/d/'
+patternMatchPathWildcard = '/a/b/c/d'
 
 '''
 What the output from patternMatch should look like.
 '''
-simpleMatchOut = ['x,y', '1,2,3', 'NO MATCH', 'bar,foo']
-complexMatchOut = ['a,*,*', 'x,*,1', 'NO MATCH', 'NO MATCH']
-wildcardMatchOut = ['*,b,*']
+simpleMatchOut = ['x,y']
+complexMatchOut = ['1,a,2,d']
+wildcardMatchOut = ['*,b,*,*', '*,*,c,d', '*,b,*,d']
+
+'''
+Our tests for checking 
+'''
 
 
 class patternMatchTestCase(unittest.TestCase):
@@ -78,14 +89,14 @@ class patternMatchTestCase(unittest.TestCase):
     '''
     def test_tooManyPathsSplit(self):
         listSplitter(splitInTooManyPaths)
-        self.assertRaises(StandardError)
+        self.assertRaises(ValueError)
 
     '''
     Tests our listSplitter function when we have too many paths for the key.
     '''
     def test_NotEnoughPathsSplit(self):
         listSplitter(splitInNotEnoughPaths)
-        self.assertRaises(StandardError)
+        self.assertRaises(ValueError)
 
     '''
     Tests our listSplitter function when we don't have enough patterns for the
@@ -106,21 +117,21 @@ class patternMatchTestCase(unittest.TestCase):
     Tests against an example that contains only a few simple items.
     '''
     def test_simpleMatch(self):
-        a = patternMatch(splitOutPatternsSimple, splitOutPathsSimple)
+        a = patternMatch(patternMatchPathSimple, splitOutPatternsSimple)
         self.assertEqual(a, simpleMatchOut)
 
     '''
     Tests against an example that has several complex matches.
     '''
     def test_complexMatch(self):
-        a = patternMatch(splitOutPatternsComplex, splitOutPathsComplex)
+        a = patternMatch(patternMatchPathComplex, splitOutPatternsComplex)
         self.assertEqual(a, complexMatchOut)
 
     '''
     Tests against items where multiple wildcards exists, but one is better.
     '''
     def test_wildcardMatch(self):
-        a = patternMatch(splitOutWildcardPatterns, splitOutWildcardPaths)
+        a = patternMatch(patternMatchPathWildcard, splitOutPatternsWildcard)
         self.assertEqual(a, wildcardMatchOut)
 
 

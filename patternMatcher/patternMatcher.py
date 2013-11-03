@@ -17,24 +17,21 @@ def listSplitter(inputList):
 		startOfPaths = int(newInputList[0]) + 1
 	except ValueError:
 		print('Non-integer value found in first key')
-		sys.exit()
 	try:
 		endOfPaths = int(newInputList[startOfPaths]) + int(newInputList[0]) + 1
 	except ValueError:
 		print('Non-integer value found in second key')
-		sys.exit()
 	try:
 		for i in newInputList[1:(startOfPaths)]:
 			patternsList.append(i)
 	except:
 		print("List length is inaccurate compared to key value for patterns.")
-		sys.exit()
 	try:
 		for i in newInputList[(startOfPaths + 1):(endOfPaths + 1)]:
 			pathsList.append(i)
 	except:
 		print("List length is inaccurate compared to key value for paths.")
-		sys.exit()
+
 	return(patternsList, pathsList)
 
 
@@ -109,7 +106,7 @@ def bestMatch(path, matches):
 			wildcardVal = wildcardValNew
 
 	return(bestMatch.split())
-	
+
 
 def doIt(inputList):
 	'''
@@ -120,6 +117,7 @@ def doIt(inputList):
 	output = []
 	patterns, paths = listSplitter(inputList)
 	for path in paths:
+		print(path, patterns)
 		matches = patternMatch(path, patterns)
 		if not matches:
 			output.append(["NO MATCH"])
@@ -140,5 +138,4 @@ if __name__ == '__main__':
 			inputList.append(line.strip())
 		finalList = doIt(inputList)
 	for i in finalList:
-		sys.stdout.write(i + "\n")
-	
+		sys.stdout.write(i + "\n")	
