@@ -70,10 +70,11 @@ def patternMatch(patternsList, pathsList):
 
 	newPatternsList = patternsList
 	newPathsList = pathsList
+	
 	matchedList = []
-
+'''
 	for path in newPathsList:
-		matchesFound = False
+		patternMatchedList = []
 		strippedPath = path.strip("/").split("/")
 		for pattern in newPatternsList:
 			matches = 0
@@ -82,20 +83,98 @@ def patternMatch(patternsList, pathsList):
 				try:
 					if field == '*':
 						matches += 1
+						continue
 					elif field == strippedPath[i]:
 						matches += 1
 				except:
-					continue	
+					continue
 			if matches == len(strippedPath):
-				matchedList.append(pattern)
-				matchesFound = True
-		if matchesFound == False:
+				patternMatchedList.append(pattern)
+		if len(patternMatchedList) == 0:
 			matchedList.append('NO MATCH')
+		elif len(patternMatchedList) > 1:
+			oldWildcardMatch = 0
+			oldMatchedChar = 0
+			for pattern in patternMatchedList:
+				wildcardMatch = 0
+				matchedChar = 0
+				strippedPattern = pattern.strip(",").split(",")
+				for i, field in reversed(list(enumerate(strippedPattern))):
+					if field == '*':
+						wildcardMatch += 1
+					else:
+						matchedChar += i
+						print('field ', field)
+						print(matchedChar)
+				if matchedChar < oldMatchedChar:
+					oldMatchedChar = matchedChar
+					bestMatch = pattern
+					if wildcardMatch < oldWildcardMatch:
+						oldWildcardMatch = wildcardMatch
+						bestMatch = pattern
+					else:
+						bestMatch = pattern
+				else:
+					bestMatch = pattern
+			matchedList.append(bestMatch)
+
+						
+		else:
+			matchedList.append(patternMatchedList[0])
+'''
+	for path in newPathsList:
+		patternMatchedList = []
+		strippedPath = path.strip("/").split("/")
+		for pattern in newPatternsList:
+			matches = 0
+			strippedPattern = pattern.strip(",").split(",")
+			for i, field in enumerate(strippedPattern):
+				try:
+					if field == '*':
+						matches += 1
+						continue
+					elif field == strippedPath[i]:
+						matches += 1
+				except:
+					continue
+			if matches == len(strippedPath):
+				patternMatchedList.append(pattern)
+		if len(patternMatchedList) == 0:
+			matchedList.append('NO MATCH')
+		elif len(patternMatchedList) > 1:
+			oldWildcardMatch = 0
+			oldMatchedChar = 0
+			for pattern in patternMatchedList:
+				wildcardMatch = 0
+				matchedChar = 0
+				strippedPattern = pattern.strip(",").split(",")
+				for i, field in reversed(list(enumerate(strippedPattern))):
+					if field == '*':
+						wildcardMatch += 1
+					else:
+						matchedChar += i
+						print('field ', field)
+						print(matchedChar)
+				if matchedChar < oldMatchedChar:
+					oldMatchedChar = matchedChar
+					bestMatch = pattern
+					if wildcardMatch < oldWildcardMatch:
+						oldWildcardMatch = wildcardMatch
+						bestMatch = pattern
+					else:
+						bestMatch = pattern
+				else:
+					bestMatch = pattern
+			matchedList.append(bestMatch)
+
+						
+		else:
+			matchedList.append(patternMatchedList[0])
+
 	return(matchedList)
 	
 
-def bestMatch(pattern, allMatches):
-	pass
+
 
 
 if __name__ == '__main__':
