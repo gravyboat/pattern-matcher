@@ -53,6 +53,8 @@ def patternMatch(path, patterns):
 	for pattern in newPatterns:
 		matches = 0
 		strippedPattern = pattern.strip(",").split(",")
+		if len(strippedPattern) != len(strippedPath):
+			continue
 		for i, field in enumerate(strippedPattern):
 			try:
 				if field == '*':
@@ -77,36 +79,43 @@ def bestMatch(path, matches):
 	For example: given the patterns `*,*,c` and `*,b,*`, and the path
 	`/a/b/c/`, the best-matching pattern would be `*,b,*`.
 	'''
-	
 	currentVal = len(path)
 	wildcardVal = 0
 	newVal = 0
+	totalStars = len(path)
 	strippedPath = path.strip("/").split("/")
 	for match in matches:
 		wildcardValNew = 0
+		currentStars = 0
 		strippedMatch = match.strip(",").split(",")
 		for i, field in reversed(list(enumerate(strippedMatch))):
-			try:
-				if field == strippedPath[i]:
-					newVal = i
-				elif field == '*':
-					wildcardValNew += i
-			except:
-				break
-		if newVal <= currentVal and wildcardValNew > wildcardVal:
+			if field == strippedPath[i]:
+				newVal = i
+				currentStars -= 1
+			elif field == '*':
+				wildcardValNew + i
+		if newVal < currentVal:
 			bestMatch = match
 			currentVal = newVal
+			totalStars = currentStars
+			wildcardVal = wildcardValNew			
+		elif currentStars < totalStars:
+			bestMatch = match
+			currentVal = newVal
+			totalStars = currentStars
 			wildcardVal = wildcardValNew
-		elif newVal < currentVal:
+		elif wildcardValNew > wildcardVal:
 			bestMatch = match
-			currentVal = newVal
 			wildcardVal = wildcardValNew
 
 	return(bestMatch.split())
+	
 
 def doIt(inputList):
 	'''
-
+	Our doIt function simply kicks everything off, allowing a user to pass
+	their input list to this single function, as opposed to each function.
+	Once running it simply runs through the entire program.
 	'''
 	output = []
 	patterns, paths = listSplitter(inputList)
