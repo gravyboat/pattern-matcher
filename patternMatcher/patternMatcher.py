@@ -1,5 +1,16 @@
 #!/usr/bin/python
 
+'''
+Author - Forrest Alvarez
+Date - 2013-11-03
+
+Pattern match is a number of functions designed to take a list, then find the
+best match between the two sections, which are key delimited (for example
+there is a key, then a number of patterns equal to that key, another key,
+then a number of patterns equal to the second key). The first group of 
+patterns is comma delimeted. The second is delimited by slashes.
+'''
+
 import sys
 import itertools
 
@@ -16,21 +27,21 @@ def listSplitter(inputList):
 	try:
 		startOfPaths = int(newInputList[0]) + 1
 	except ValueError:
-		print('Non-integer value found in first key')
+		return('Non-integer value found in first key')
 	try:
 		endOfPaths = int(newInputList[startOfPaths]) + int(newInputList[0]) + 1
 	except ValueError:
-		print('Non-integer value found in second key')
+		return('Non-integer value found in second key')
 	try:
 		for i in newInputList[1:(startOfPaths)]:
 			patternsList.append(i)
 	except:
-		print("List length is inaccurate compared to key value for patterns.")
+		return("List length is inaccurate compared to key value for patterns.")
 	try:
 		for i in newInputList[(startOfPaths + 1):(endOfPaths + 1)]:
 			pathsList.append(i)
 	except:
-		print("List length is inaccurate compared to key value for paths.")
+		return("List length is inaccurate compared to key value for paths.")
 
 	return(patternsList, pathsList)
 

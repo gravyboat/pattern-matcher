@@ -2,7 +2,7 @@
 
 '''
 Author - Forrest Alvarez
-Date - 2013-11-01
+Date - 2013-11-03
 
 The patternMatcher tests are used to check all functions within the
 patternMatcher.py script.
@@ -28,7 +28,7 @@ splitInComplex = [3, 'a,*,*', 'x,*,1', 'x,*,2',
 wildcardMatchIn = [2, '*,*,c', '*,b,*', 1, '/a/b/c/']
 
 '''
-Input lists for splitting specifically designed to return errors
+Input lists for splitting specifically designed to return errors.
 '''
 
 splitInTooManyPaths = [2, 'x,y', '1,2,3', 
@@ -36,6 +36,8 @@ splitInTooManyPaths = [2, 'x,y', '1,2,3',
 splitInNotEnoughPaths = [2, 'x,y', '1,2,3', 3, 'x/y', '1/2/4/']
 splitInTooManyPatterns = [1, 'x,y', '1,2,3', 2, 'x/y', '1/2/4/']
 splitInnotEnoughPatterns = [3, 'x,y', '1,2,3', 2, 'x/y', '1/2/4/']
+nonIntegerPathKey = ['c', 'x,y', '1,2,3', 2, 'x/y', '1/2/3/']
+nonIntegerPatternKey = [2, 'x,y', '1,2,3', 'c', 'x/y', '1/2/3/']
 
 '''
 Our output lists for the splitting, also used as input for pattern matching.
@@ -85,13 +87,13 @@ class patternMatchTestCase(unittest.TestCase):
     key.
     '''
     def test_tooManyPathsSplit(self):
-        listSplitter(splitInTooManyPaths)
+        a = listSplitter(splitInTooManyPaths)
         self.assertRaises(ValueError)
 
     '''
     Tests our listSplitter function when we have too many paths for the key.
     '''
-    def test_NotEnoughPathsSplit(self):
+    def test_notEnoughPathsSplit(self):
         listSplitter(splitInNotEnoughPaths)
         self.assertRaises(ValueError)
 
@@ -106,9 +108,23 @@ class patternMatchTestCase(unittest.TestCase):
     '''
     Tests our listSplitter function when we have too many paths for the key.
     '''
-    def test_NotEnoughPatternsSplit(self):
+    def test_notEnoughPatternsSplit(self):
         listSplitter(splitInnotEnoughPatterns)
         self.assertRaises(StandardError)
+
+    '''
+    Tests our listSplitter function when we have too many paths for the key.
+    '''
+    def test_nonIntegerPatternKey(self):
+        listSplitter(nonIntegerPathKey)
+        self.assertRaises(ValueError)
+
+    '''
+    Tests our listSplitter function when we have too many paths for the key.
+    '''
+    def test_nonIntegerPathKey(self):
+        listSplitter(nonIntegerPatternKey)
+        self.assertRaises(ValueError)
 
     '''
     Tests against an example that contains only a few simple items.
