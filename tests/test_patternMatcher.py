@@ -69,10 +69,7 @@ Our tests for checking
 class patternMatchTestCase(unittest.TestCase):
 
     def setup(self):
-        self.simpleMatch = simpleMatch
-        self.complexMatch = complexMatch
-        self.weirdMatch = weirdMatch
-        self.largeMatch = largeMatch
+        pass
 
     '''
     Tests our function that splits the lists to ensure it returns the proper
